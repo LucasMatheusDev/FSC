@@ -1,28 +1,37 @@
 package main
 
 import (
-	"FSC/internal/commands"
 	"FSC/internal/cli"
+	"FSC/internal/commands"
 	"fmt"
 	"os"
-	"strings"
 )
 
 func main() {
-	cli.InitCli()
-	var firstArg string
 
-	if len(os.Args) > 1 {
-		firstArg = os.Args[1]
-	} else {
-		fmt.Println("Por favor, forneça o nome do módulo usando a flag -module")
-		os.Exit(1)
+	commandsList := []commands.Command{
+		commands.CleanDartArch{},
 	}
 
-	if strings.Contains(firstArg, "create-module") {
-		commands.CreateCleanDart()
-	} else {
+	cli.InitCli()
+
+	if len(os.Args) == 1 {
+
 		fmt.Println("Por favor, forneça o nome do módulo usando a flag -module")
 		os.Exit(1)
+
+	}
+
+	for command := range commandsList {
+		if commandsList[command].IsMatchCommand() {
+			if cli.IsHelp {
+				commandsList[command].OnHelp()
+			} else {
+				commandsList[command].Execute()
+			}
+		} else {
+			cli.PrintMessage("comando não encontrado")
+		}
+
 	}
 }

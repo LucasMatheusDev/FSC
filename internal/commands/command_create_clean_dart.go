@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"FSC/internal/cli"
 	"flag"
 	"fmt"
 	"log"
@@ -9,14 +10,33 @@ import (
 	"strings"
 )
 
-func CreateCleanDart() {
-	var moduleName string
-	flag.StringVar(&moduleName, "module", "", "Nome do módulo a ser criado")
+type CleanDartArch struct {
+}
+
+func (c CleanDartArch) IsMatchCommand() bool {
+	moduleName = ""
+	flag.StringVar(&moduleName, "create-module", "", "Nome do módulo a ser criado")
 	flag.Parse()
+	return moduleName != ""
+
+}
+
+var moduleName string
+
+func (c CleanDartArch) Execute() {
+	createCleanDart()
+}
+
+func (c CleanDartArch) OnHelp() {
+	cli.PrintMessage("Comando para criar a arquitetura Clean dart")
+}
+
+// Flag: -create-module=nome_do_modulo
+func createCleanDart() {
 
 	// Verifique se o nome do módulo foi fornecido
 	if moduleName == "" {
-		fmt.Println("Por favor, forneça o nome do módulo usando a flag -module")
+		fmt.Println("Por favor, forneça o nome do módulo usando a flag -create-module")
 		os.Exit(1)
 	}
 
@@ -72,6 +92,7 @@ func CreateCleanDart() {
 			defer file.Close()
 		}
 
-		fmt.Println("Criado com sucesso:", dir)
+		cli.PrintVerboseMessage("Criado com sucesso: " + dir)
 	}
+	cli.PrintMessage("Módulo" + moduleName + " criado com sucesso!")
 }
