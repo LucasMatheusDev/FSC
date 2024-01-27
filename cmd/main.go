@@ -11,6 +11,7 @@ func main() {
 
 	commandsList := []commands.Command{
 		commands.CleanDartArch{},
+		commands.CreateTest{},
 	}
 
 	cli.InitCli()

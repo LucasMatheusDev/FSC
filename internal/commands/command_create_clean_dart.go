@@ -21,8 +21,6 @@ func (c CleanDartArch) IsMatchCommand() bool {
 
 }
 
-var moduleName string
-
 func (c CleanDartArch) Execute() {
 	createCleanDart()
 }
@@ -30,6 +28,8 @@ func (c CleanDartArch) Execute() {
 func (c CleanDartArch) OnHelp() {
 	cli.PrintMessage("Comando para criar a arquitetura Clean dart")
 }
+
+var moduleName string
 
 // Flag: -create-module=nome_do_modulo
 func createCleanDart() {
