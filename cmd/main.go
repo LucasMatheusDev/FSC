@@ -9,10 +9,7 @@ import (
 
 func main() {
 
-	commandsList := []commands.Command{
-		commands.CleanDartArch{},
-		commands.CreateTest{},
-	}
+	commandsList := commands.CommandsAvailable()
 
 	cli.InitCli()
 

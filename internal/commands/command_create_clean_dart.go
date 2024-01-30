@@ -2,6 +2,7 @@ package commands
 
 import (
 	"FSC/internal/cli"
+	"FSC/internal/commands/utils"
 	"flag"
 	"fmt"
 	"log"
@@ -15,7 +16,7 @@ type CleanDartArch struct {
 
 func (c CleanDartArch) IsMatchCommand() bool {
 	moduleName = ""
-	flag.StringVar(&moduleName, "create-module", "", "Nome do módulo a ser criado")
+	flag.StringVar(&moduleName, "create-module", "", "Module name to create")
 	flag.Parse()
 	return moduleName != ""
 
@@ -31,25 +32,26 @@ func (c CleanDartArch) OnHelp() {
 
 var moduleName string
 
-// Flag: -create-module=nome_do_modulo
 func createCleanDart() {
 
-	// Verifique se o nome do módulo foi fornecido
 	if moduleName == "" {
 		fmt.Println("Por favor, forneça o nome do módulo usando a flag -create-module")
 		os.Exit(1)
 	}
 
-	// Obtém o diretório atual de trabalho
-	currentDir, err := os.Getwd()
-	if err != nil {
-		fmt.Printf("Erro ao obter o diretório de trabalho: %s\n", err)
-		os.Exit(1)
+	var currentDir string
+
+	currentDir = utils.GetProjectPath()
+	if currentDir == "" {
+		var err error = nil
+		currentDir, err = os.Getwd()
+		if err != nil {
+			fmt.Printf("Erro ao obter o diretório de trabalho: %s\n", err)
+			os.Exit(1)
+		}
 	}
 
-	// Lista de diretórios para criar
 	directories := []string{
-		/// Module
 		currentDir + "/" + moduleName + "/" + moduleName + "_module.dart",
 		currentDir + "/" + moduleName + "/" + moduleName + "_routes.dart",
 
@@ -75,15 +77,12 @@ func createCleanDart() {
 	}
 
 	for _, dir := range directories {
-		// Salva pastas e arquivos
 		dir = strings.ReplaceAll(dir, "\\", "/")
 
-		// Cria os diretórios pais
 		if err := os.MkdirAll(filepath.Dir(dir), os.ModePerm); err != nil {
 			log.Fatal(err)
 		}
 
-		// Cria o arquivo
 		if strings.Contains(dir, ".dart") {
 			file, err := os.Create(dir)
 			if err != nil {

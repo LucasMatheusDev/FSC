@@ -1,8 +1,7 @@
 package commands
 
-type Command interface {
+type CommandInterface interface {
 	IsMatchCommand() bool
 	Execute()
 	OnHelp()
 }
-
