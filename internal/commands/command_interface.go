@@ -1,7 +1,9 @@
 package commands
 
 type CommandInterface interface {
-	IsMatchCommand() bool
+	InitVariables() 
 	Execute()
 	OnHelp()
+	CommandName() string
+
 }

@@ -16,19 +16,21 @@ import (
 type CreateTest struct {
 }
 
-func (c CreateTest) IsMatchCommand() bool {
-	moduleName = ""
-	flag.StringVar(&moduleName, "test-create", "", "Teste de funcionalidade")
-	flag.Parse()
-	return moduleName != ""
-
+func (c CreateTest) CommandName() string {
+	return "test-create"
 }
-func (c CreateTest) Execute() {
-	// obter valor de variavel de ambiente
+
+func (c CreateTest) InitVariables() {
+	flag.Bool(c.CommandName(), false, "Teste de funcionalidade")
 	var envOpenAiKey = os.Getenv("OPENAI_KEY")
 	flag.StringVar(&openAiKey, "openai-key", envOpenAiKey, "Chave de acesso a api do openai")
 	flag.StringVar(&pathTestModel, "model-test", "../../test_model.txt", "Teste de funcionalidade")
 	flag.StringVar(&codeForTestPath, "code", "", "Caminho do código a ser testado")
+
+}
+
+func (c CreateTest) Execute() {
+	// obter valor de variavel de ambiente
 	createTest()
 }
 

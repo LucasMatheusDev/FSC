@@ -14,12 +14,13 @@ import (
 type CleanDartArch struct {
 }
 
-func (c CleanDartArch) IsMatchCommand() bool {
-	moduleName = ""
-	flag.StringVar(&moduleName, "create-module", "", "Module name to create")
-	flag.Parse()
-	return moduleName != ""
+func (c CleanDartArch) CommandName() string {
+	return "create-module"
+}
 
+func (c CleanDartArch) InitVariables() {
+	moduleName = ""
+	flag.StringVar(&moduleName, c.CommandName(), "", "Module name to create")
 }
 
 func (c CleanDartArch) Execute() {
