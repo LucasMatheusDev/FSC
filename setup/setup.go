@@ -24,7 +24,7 @@ func main() {
 	}
 }
 
-var pathExecutable string = "./fsc.exe"
+var pathMainExecutable string = "./main.exe"
 var executableName string = "fsc.exe"
 var fileName string = "fsc"
 
@@ -38,7 +38,7 @@ func setupWindows() {
 
 	fmt.Println("User path: " + userPath)
 
-	err = copyFile(pathExecutable, filepath.Join(userPath, "\\"+executableName))
+	err = copyFile(pathMainExecutable, filepath.Join(userPath, "\\"+executableName))
 	if err != nil {
 		fmt.Println("Error moving "+executableName+": ", err)
 		return
