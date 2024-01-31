@@ -3,6 +3,7 @@ package main
 import (
 	"FSC/internal/cli"
 	"FSC/internal/commands"
+	"flag"
 	"fmt"
 	"os"
 	"strings"
@@ -17,6 +18,7 @@ func main() {
 	for index := range commandsList {
 		commandsList[index].InitVariables()
 	}
+	flag.Parse()
 
 	if len(os.Args) == 1 {
 

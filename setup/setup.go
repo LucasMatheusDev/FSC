@@ -25,8 +25,7 @@ func main() {
 }
 
 var pathMainExecutable string = "./main.exe"
-var executableName string = "fsc.exe"
-var fileName string = "fsc"
+var fileName string = ".fsc/bin/fsc"
 
 func setupWindows() {
 	cli.PrintMessage("Setting up for Windows...")
@@ -38,15 +37,17 @@ func setupWindows() {
 
 	fmt.Println("User path: " + userPath)
 
-	err = copyFile(pathMainExecutable, filepath.Join(userPath, "\\"+executableName))
+	pathFile := filepath.Join(userPath, fileName)
+
+	err = copyFile(pathMainExecutable, pathFile+".exe")
 	if err != nil {
-		fmt.Println("Error moving "+executableName+": ", err)
+		fmt.Println("Error moving "+pathFile+": ", err)
 		return
 	}
 
 	err = addToPath(filepath.Join(userPath, fileName), true)
 	if err != nil {
-		fmt.Println("Error adding "+executableName+" to PATH: ", err)
+		fmt.Println("Error adding "+pathFile+" to PATH: ", err)
 		return
 	}
 
@@ -62,10 +63,12 @@ func setupUnix() {
 		return
 	}
 
-	err = copyFile(executableName, filepath.Join(userPath, executableName))
+	pathFile := filepath.Join(userPath, fileName)
+
+	err = copyFile(pathMainExecutable, pathFile)
 
 	if err != nil {
-		cli.PrintMessage("Error moving" + executableName + ": " + err.Error())
+		cli.PrintMessage("Error moving" + pathFile + ": " + err.Error())
 		return
 	} else {
 		addToPath(filepath.Join(userPath, "fsc"), false)
@@ -80,6 +83,8 @@ func copyFile(source, destination string) error {
 			return fmt.Errorf("failed to remove existing destination file: %w", err)
 		}
 	}
+
+	os.MkdirAll(filepath.Dir(destination), os.ModePerm)
 
 	sourceFile, err := os.Open(source)
 	if err != nil {

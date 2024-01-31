@@ -52,6 +52,8 @@ func createCleanDart() {
 		}
 	}
 
+	cli.PrintVerboseMessage("Current Dir: " + currentDir)
+
 	directories := []string{
 		currentDir + "/" + moduleName + "/" + moduleName + "_module.dart",
 		currentDir + "/" + moduleName + "/" + moduleName + "_routes.dart",
